@@ -77,6 +77,8 @@
 #define SBUS_DIGITAL_CHANNEL_MIN 173
 #define SBUS_DIGITAL_CHANNEL_MAX 1812
 
+serialPort_t *sBusPortGlobal = NULL;
+
 enum {
     DEBUG_SBUS_FRAME_FLAGS = 0,
     DEBUG_SBUS_STATE_FLAGS,

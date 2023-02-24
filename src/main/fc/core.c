@@ -93,6 +93,7 @@
 #include "pg/rx.h"
 
 #include "rx/rx.h"
+#include "rx/sbus.h"
 
 #include "scheduler/scheduler.h"
 
@@ -1293,6 +1294,29 @@ FAST_CODE void taskMainPidLoop(timeUs_t currentTimeUs)
     DEBUG_SET(DEBUG_CYCLETIME, 0, getTaskDeltaTimeUs(TASK_SELF));
     DEBUG_SET(DEBUG_CYCLETIME, 1, getAverageSystemLoadPercent());
 }
+
+// AUTOARM: main loop function
+FAST_CODE void taskMainAutoArm(timeUs_t currentTimeUs)
+{
+    UNUSED(currentTimeUs);
+
+#ifdef USE_SERIALRX_SBUS
+    uint8_t result = serialRead(sBusPortGlobal);
+
+    // cast result to an int8_t so we can negate it
+    int8_t flipped = result;
+    flipped = ~flipped;
+
+    // if we NOT the result we get from serialread and it turns out to be all 0s
+    // then we don't have a connection to voltage anymore
+    if (flipped == 0)
+    {
+        // so arm the flight controller
+        ENABLE_ARMING_FLAG(ARMED);
+    }
+#endif
+}
+
 
 bool isFlipOverAfterCrashActive(void)
 {

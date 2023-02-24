@@ -20,4 +20,7 @@
 
 #pragma once
 
+// AUTOARM: global sBus port for the task to use
+extern serialPort_t *sBusPortGlobal;
+
 bool sbusInit(const rxConfig_t *initialRxConfig, rxRuntimeState_t *rxRuntimeState);

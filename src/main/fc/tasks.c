@@ -450,6 +450,10 @@ task_attribute_t task_attributes[TASK_COUNT] = {
 #ifdef USE_CRSF_V3
     [TASK_SPEED_NEGOTIATION] = DEFINE_TASK("SPEED_NEGOTIATION", NULL, NULL, speedNegotiationProcess, TASK_PERIOD_HZ(100), TASK_PRIORITY_LOW),
 #endif
+
+#ifdef USE_SERIALRX_SBUS
+    [TASK_AUTOARM] = DEFINE_TASK("AUTOARM", NULL, NULL, taskMainAutoArm, TASK_PERIOD_HZ(169), TASK_PRIORITY_LOWEST)
+#endif
 };
 
 task_t *getTask(unsigned taskId)
@@ -616,6 +620,10 @@ void tasksInit(void)
 #ifdef USE_CRSF_V3
     const bool useCRSF = rxRuntimeState.serialrxProvider == SERIALRX_CRSF;
     setTaskEnabled(TASK_SPEED_NEGOTIATION, useCRSF);
+#endif
+
+#ifdef USE_SERIALRX_SBUS
+    setTaskEnabled(TASK_AUTOARM, true);
 #endif
 
 #ifdef SIMULATOR_MULTITHREAD
