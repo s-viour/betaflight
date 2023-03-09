@@ -1298,7 +1298,9 @@ FAST_CODE void taskMainPidLoop(timeUs_t currentTimeUs)
 // AUTOARM: main loop function
 FAST_CODE void taskMainAutoArm(timeUs_t currentTimeUs)
 {
-    UNUSED(currentTimeUs);
+    if (currentTimeUs < 10000000) {
+        return;
+    }
 
 #ifdef USE_SERIALRX_SBUS
     uint8_t result = serialRead(sBusPortGlobal);
