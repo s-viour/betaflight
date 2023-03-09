@@ -452,7 +452,7 @@ task_attribute_t task_attributes[TASK_COUNT] = {
 #endif
 
 #ifdef USE_SERIALRX_SBUS
-    [TASK_AUTOARM] = DEFINE_TASK("AUTOARM", NULL, NULL, taskMainAutoArm, TASK_PERIOD_HZ(169), TASK_PRIORITY_LOWEST)
+    [TASK_AUTOARM] = DEFINE_TASK("AUTOARM", NULL, NULL, taskMainAutoArm, TASK_PERIOD_HZ(50), TASK_PRIORITY_LOWEST)
 #endif
 };
 

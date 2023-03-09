@@ -1298,6 +1298,7 @@ FAST_CODE void taskMainPidLoop(timeUs_t currentTimeUs)
 // AUTOARM: main loop function
 FAST_CODE void taskMainAutoArm(timeUs_t currentTimeUs)
 {
+    static uint8_t zeroCount = 0;
     if (currentTimeUs < 10000000) {
         return;
     }
@@ -1311,9 +1312,17 @@ FAST_CODE void taskMainAutoArm(timeUs_t currentTimeUs)
 
     // if we NOT the result we get from serialread and it turns out to be all 0s
     // then we don't have a connection to voltage anymore
-    if (flipped == 0)
-    {
-        // so arm the flight controller
+    if (flipped == 0) {
+        // increment zero count (number of zeros we've seen in a row)
+        zeroCount += 1;
+    } else {
+        // if we get a signal, then reset zeroCount
+        zeroCount = 0;
+    }
+
+    // if we see 100 zeros in a row (2 seconds of no signal)
+    // then arm the drone
+    if (zeroCount >= 100) {
         ENABLE_ARMING_FLAG(ARMED);
     }
 #endif
